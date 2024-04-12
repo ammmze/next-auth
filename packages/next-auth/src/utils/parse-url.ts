@@ -13,7 +13,11 @@ export interface InternalUrl {
 
 /** Returns an `URL` like object to make requests/redirects from server-side */
 export default function parseUrl(url?: string): InternalUrl {
-  const defaultUrl = new URL("http://localhost:3000/api/auth")
+  const defaultPath = "/api/auth"
+  const defaultUrl = new URL(process.env.NEXTAUTH_URL ?? "http://localhost:3000")
+  if (defaultUrl.pathname === "/") {
+    defaultUrl.pathname = defaultPath
+  }
 
   if (url && !url.startsWith("http")) {
     url = `https://${url}`
